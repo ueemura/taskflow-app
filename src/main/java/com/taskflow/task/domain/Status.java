@@ -1,7 +1,12 @@
 package com.taskflow.task.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum Status {
 
-    PENDENTE,
-    CONCLUIDA;
+    PENDING,
+    DONE
 }

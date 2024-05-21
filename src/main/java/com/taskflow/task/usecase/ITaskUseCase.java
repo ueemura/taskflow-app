@@ -4,5 +4,5 @@ import com.taskflow.task.app.dto.TaskRequest;
 
 public interface ITaskUseCase {
 
-    void saveTask(TaskRequest request);
+    void save(TaskRequest request);
 }
