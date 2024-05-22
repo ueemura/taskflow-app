@@ -7,12 +7,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class TaskResponse {
+@AllArgsConstructor
+public class TaskUpdateRequest {
 
-    private Integer id;
     private String description;
-    private String status;
-
 }
