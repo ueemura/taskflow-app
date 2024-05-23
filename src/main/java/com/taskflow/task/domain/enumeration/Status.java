@@ -1,4 +1,4 @@
-package com.taskflow.task.domain;
+package com.taskflow.task.domain.enumeration;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -3,9 +3,8 @@ package com.taskflow.task.usecase;
 import com.taskflow.task.app.dto.TaskRequest;
 import com.taskflow.task.app.dto.TaskResponse;
 import com.taskflow.task.app.dto.TaskUpdateRequest;
-import com.taskflow.task.domain.Status;
-import com.taskflow.task.domain.Task;
-
+import com.taskflow.task.domain.entity.Task;
+import com.taskflow.task.domain.enumeration.Status;
 import com.taskflow.task.presenter.ITaskMapper;
 import com.taskflow.task.repository.TaskRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -26,6 +25,18 @@ public class TaskUseCase implements ITaskUseCase {
 
     @Inject
     TaskRepository repository;
+
+
+    @Override
+    public Task getById(Integer id) {
+        Task foundTask = repository.findById(id);
+
+        if (foundTask == null) {
+            throw new RuntimeException();  // criar exceção personalizada
+        }
+
+        return foundTask;
+    }
 
     @Override
     public List<TaskResponse> getAll() {
@@ -48,10 +59,10 @@ public class TaskUseCase implements ITaskUseCase {
         task.setStatus(Status.PENDING);
         task.setStartDate(LocalDateTime.now());
 
-        try{
+        try {
             repository.persistAndFlush(task);
-        } catch (Exception e){
-            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println(e.getMessage()); // criar exceção personalizada
         }
 
         log.info("[TaskUseCase] - end");
@@ -64,9 +75,9 @@ public class TaskUseCase implements ITaskUseCase {
         Task task = repository.findById(id);
         task.setDescription(mapper.toEntity(request).getDescription());
 
-        try{
+        try {
             repository.persistAndFlush(task);
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
@@ -78,10 +89,23 @@ public class TaskUseCase implements ITaskUseCase {
         task.setStatus(Status.DONE);
         task.setEndDate(LocalDateTime.now());
 
-        try{
+        try {
             repository.persistAndFlush(task);
-        } catch (Exception e){
-            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println(e.getMessage()); // criar exceção personalizada
         }
+    }
+
+    @Override
+    @Transactional
+    public void delete(Integer id) {
+        Task foundTask = getById(id);
+
+        try {
+            repository.delete(foundTask);
+        } catch (Exception e) {
+            System.out.println(e.getMessage()); // criar exceção personalizada
+        }
+
     }
 }

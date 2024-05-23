@@ -1,5 +1,6 @@
-package com.taskflow.task.domain;
+package com.taskflow.task.domain.entity;
 
+import com.taskflow.task.domain.enumeration.Status;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import lombok.*;

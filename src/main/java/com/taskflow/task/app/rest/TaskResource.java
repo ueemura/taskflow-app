@@ -49,4 +49,11 @@ public class TaskResource {
         }
     }
 
+    @DELETE
+    @Path("/{taskId}")
+    public Response deleteTask(@PathParam("taskId") Integer id){
+        useCase.delete(id);
+        return Response.status(Response.Status.OK).build();
+    }
+
 }
