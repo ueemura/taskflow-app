@@ -1,16 +1,18 @@
 package com.taskflow.task.app.dto;
 
-import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.Builder;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TaskRequest {
+public class TaskResponse {
 
-    @NotNull(message = "Description is required")
+    private Integer id;
     private String description;
+    private String status;
+
 }
