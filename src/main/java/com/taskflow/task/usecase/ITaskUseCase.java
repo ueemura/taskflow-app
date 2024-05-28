@@ -9,15 +9,15 @@ import java.util.List;
 
 public interface ITaskUseCase {
 
-    Task getById(Integer id);
+    Task getById(Integer id) throws Exception;
 
     List<TaskResponse> getAll();
 
-    void save(TaskRequest request);
+    void save(TaskRequest request) throws Exception;
 
-    void update(Integer id, TaskUpdateRequest request);
+    void update(Integer id, TaskUpdateRequest request) throws Exception;
 
-    void updateTaskStatus(Integer id);
+    void updateTaskStatus(Integer id) throws Exception;
 
-    void delete(Integer id);
+    void delete(Integer id) throws Exception;
 }

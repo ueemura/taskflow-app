@@ -5,6 +5,7 @@ import com.taskflow.task.app.dto.TaskResponse;
 import com.taskflow.task.app.dto.TaskUpdateRequest;
 import com.taskflow.task.domain.entity.Task;
 import com.taskflow.task.domain.enumeration.Status;
+import com.taskflow.task.domain.exceptions.BusinessException;
 import com.taskflow.task.presenter.ITaskMapper;
 import com.taskflow.task.repository.TaskRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -28,11 +29,11 @@ public class TaskUseCase implements ITaskUseCase {
 
 
     @Override
-    public Task getById(Integer id) {
+    public Task getById(Integer id) throws Exception {
         Task foundTask = repository.findById(id);
 
         if (foundTask == null) {
-            throw new RuntimeException();  // criar exceção personalizada
+            throw new BusinessException("Task not found");
         }
 
         return foundTask;
@@ -52,7 +53,7 @@ public class TaskUseCase implements ITaskUseCase {
 
     @Override
     @Transactional
-    public void save(TaskRequest request) {
+    public void save(TaskRequest request) throws Exception {
         log.info("[TaskUseCase] - Save Task - begin");
         Task task = mapper.toEntity(request);
 
@@ -62,7 +63,7 @@ public class TaskUseCase implements ITaskUseCase {
         try {
             repository.persistAndFlush(task);
         } catch (Exception e) {
-            System.out.println(e.getMessage()); // criar exceção personalizada
+            throw new BusinessException(e.getMessage());
         }
 
         log.info("[TaskUseCase] - end");
@@ -70,41 +71,41 @@ public class TaskUseCase implements ITaskUseCase {
 
     @Override
     @Transactional
-    public void update(Integer id, TaskUpdateRequest request) {
+    public void update(Integer id, TaskUpdateRequest request) throws Exception {
         log.info("[TaskUseCase] - Update Task Description");
-        Task task = repository.findById(id);
+        Task task = getById(id);
         task.setDescription(mapper.toEntity(request).getDescription());
 
         try {
             repository.persistAndFlush(task);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            throw new BusinessException(e.getMessage());
         }
     }
 
     @Override
     @Transactional
-    public void updateTaskStatus(Integer id) {
-        Task task = repository.findById(id);
+    public void updateTaskStatus(Integer id) throws Exception {
+        Task task = getById(id);
         task.setStatus(Status.DONE);
         task.setEndDate(LocalDateTime.now());
 
         try {
             repository.persistAndFlush(task);
         } catch (Exception e) {
-            System.out.println(e.getMessage()); // criar exceção personalizada
+            throw new BusinessException(e.getMessage());
         }
     }
 
     @Override
     @Transactional
-    public void delete(Integer id) {
+    public void delete(Integer id) throws Exception {
         Task foundTask = getById(id);
 
         try {
             repository.delete(foundTask);
         } catch (Exception e) {
-            System.out.println(e.getMessage()); // criar exceção personalizada
+            throw new BusinessException(e.getMessage());
         }
 
     }
